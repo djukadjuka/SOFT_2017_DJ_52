@@ -1,3 +1,5 @@
+#Support_Funs.py FILE
+
 import numpy as np
 import os
 import sys
@@ -88,14 +90,54 @@ def contrast(img):
 
 
 #brzo crtanje slike sa svim podesavanjima
-def drawImage(img):
-    cv2.imshow('img',img)
+def drawImage(img,title):
+    cv2.imshow(title,img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+#brzo crtanje vise slika koje se gase pritiskom bilo kog tastera
+#velicina liste slika i velicine liste naslova mora biti ista
+def drawImages(images,titles):
+    for i in range(len(images)):
+        cv2.imshow(titles[i],images[i])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
+#iscrtavanje SVAKE konture jedne slike
+#iscrtava posebno konturu po konturu i prikazuje sliku
+#pozovi za proveru svaki jedan put jer traje ako slika ima puno kontura
+#probaj da prepravis thresholding kako bi se smanjio broj kontura
+def drawEachContour(contours,thresholdedImage):
 
+    #iscrtavaj od najvece konture do najmanje
+    #koristi samo za proveru pa kad stigne do manjih kontura
+    #(tackice i kvadratici koji ne znace nista) sa ctrl+c prekini
+    #posto ce crtati zauvek ako nisi prepravio thresholding
+    for i in range(len(contours)-1,0,-1):
+        
+        #prekopiraj sliku da ti je ne kvari
+        img = thresholdedImage.copy()
 
+        #napravi matru svih nula posle za bitwise andovanje
+        mask = np.zeros(img.shape,np.uint8)
+
+        #sortiraj po velicini, mogao bi prekinuti petlju na tipa pola velicine
+        #kontura posto ce karakteri sigurno biti medju najvecim
+        cnt = sorted(contours,key=cv2.contourArea)
+
+        #iscrtaj konture po masci
+        #OVO CE SAMO DA PREPRAVI MASKU NECE NISTA ISCRTATI NA EKRAN
+        #CIMANJE 3h ZASTO NIJE CRTAO!!!! 
+        cv2.drawContours(mask,cnt,i,(255,255,255,255),3)
+
+        #anduj sta si dobio u masci sa originalom
+        #tacno ce tamo gde su kecevi ostaviti konturu
+        #ostalo ce obojiti crnim
+        #tu sliku sacuvas u removed
+        removed = cv2.bitwise_and(img,mask)
+
+        #prikazi tu sliku
+        drawImage(removed,"Contour")
 
 
 
