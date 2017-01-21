@@ -103,6 +103,24 @@ def drawImages(images,titles):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+#crtanje iz drugog foldera
+#posto mora prvo da iscita slicicu pa onda
+#da je iscrta ako nema direktnu putanju
+def drawImageFromFolder(path):
+    img = cv2.imread(path)
+    drawImage(img,path)
+
+#funkcija crta jednu prosledjenu konturu
+def drawOneContour(contour,imageCopy):
+        #napravi masku nula
+        mask = np.zeros(imageCopy.shape,np.uint8)
+
+        cv2.drawContours(mask,contour,-1,(255,255,255,255),3)
+
+        removed = cv2.bitwise_and(imageCopy,mask)
+
+        drawImage(removed,"Contour")
+        
 #iscrtavanje SVAKE konture jedne slike
 #iscrtava posebno konturu po konturu i prikazuje sliku
 #pozovi za proveru svaki jedan put jer traje ako slika ima puno kontura
@@ -139,5 +157,10 @@ def drawEachContour(contours,thresholdedImage):
         #prikazi tu sliku
         drawImage(removed,"Contour")
 
-
-
+#automatsko pravljenje kontura
+#da ne moram da pamtim kako se ovo koristi
+def createContours(imageCopy):
+    imageContours,contours,hierrarchy = cv2.findContours(imageCopy,
+                                                         cv2.RETR_LIST,
+                                                         cv2.CHAIN_APPROX_SIMPLE)
+    return imageContours,contours,hierrarchy

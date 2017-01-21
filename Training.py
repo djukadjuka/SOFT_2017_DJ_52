@@ -7,6 +7,10 @@ import os
 import matplotlib as ml
 import io
 import Support_Funs as sf
+import Constants as const
+
+IMAGE_WIDTH = 20
+IMAGE_HEIGHT = 20
 
 def KNNTraining():
     try:
@@ -46,3 +50,117 @@ def KNNTraining():
               classifications)
 
     return True
+
+def createTrainingData():
+    #sve slicice koje ce se koristiti za treniranje
+    imgs = []
+    grayscales = []
+    thresholds = []
+    extractedCharactersMap = {}     #mapa pronadjenih karaktera
+    goodContoursMap = {}            #mapa dobrih kontura za karaktere
+    
+    for i in range(len(const.TRAINING_IMAGE_NAMES)):
+        pth = ( const.IMAGES_FOLDER +
+                const.TRAINING_IMAGE_NAMES[i] +
+                const.IMAGES_EXTENSION)
+
+        #samo citanje slike sa putanje
+        #ako se dobije normalna slika (!None) moze da se ubaci u listu
+        #i da se radi grayscale i contrast (thresholding)
+        testImage = cv2.imread(pth)
+        if(testImage is None):
+            continue
+
+        imgs.append(testImage)
+        gray,thresh = sf.preprocessImage(testImage)
+        
+        #testiranje ucitavanja i procesiranja slika
+        #sf.drawImages([gray,thresh],["gray","thresh"])
+
+        grayscales.append(gray)
+        thresholds.append(thresh)
+
+    #za svaku thresholdovanu slicicu trebaju da se
+    #nadju konture pa da se zabeleze podaci za sliku
+    for i in range(len(thresholds)):
+        thImage = thresholds[i].copy()
+        
+        threshImage,contours,hierrarchy = sf.createContours(thImage)
+
+        #potrebno je naci neku srednju vrednost za sve konture
+        #da se ne uzimaju konture koje su jako sitne
+        #tipa kvadratici ili kruzici koji su delovi slika
+        #ili delimicne cifre ili brojevi
+        meanContourArea = 0
+        for c in range(len(contours)):
+            cArea = cv2.contourArea(contours[c])
+            meanContourArea += cArea
+        meanContourArea/=len(contours)
+        meanContourArea
+        
+        #sf.drawEachContour(contours,thImage)
+        goodContourList = []
+        extractedCharacterList = []
+        for c in range(len(contours)):
+            cArea = cv2.contourArea(contours[c])
+            if(cArea > meanContourArea):
+                #napravi sliku za proveru boundinga
+                #boundingImage = imgs[i].copy()
+                #prikazi taj original
+                #cv2.imshow("oridjidji",boundingImage)
+
+                #uzmi atribute kvadrata oko konture
+                x,y,w,h = cv2.boundingRect(contours[c])
+                karakter = thImage[y:y+h,x:x+w]
+                karakter = cv2.resize(karakter,(IMAGE_WIDTH,IMAGE_HEIGHT))
+                extractedCharacterList.append(karakter)
+
+                #prikazi karakter za proveru
+                #cv2.imshow("letter",karakter)
+                #cv2.waitKey(0)
+                #cv2.destroyAllWindows()
+                #nacrtaj kvadrat na slici
+                #cv2.rectangle(boundingImage,(x,y),(x+w,y+h),(0,255,0),2)
+
+                #prikazi sliku sa kvadratom
+                #cv2.imshow("rect",boundingImage)
+                #cv2.waitKey(0)
+                #cv2.destroyAllWindows()
+                goodContourList.append(contours[c])
+        extractedCharactersMap[const.TRAINING_IMAGE_NAMES[i]] = extractedCharacterList
+        goodContoursMap[const.TRAINING_IMAGE_NAMES[i]] = goodContourList
+
+    #prikaz kljuceva u mapi i njigovih
+    #integer vrednosti
+    #for key in sorted(goodContoursMap):
+    #    print(key," -> INT : ",ord(key))
+    #provera dal je dobro nasao slike karaktera
+    #for key in sorted( extractedCharactersMap ):
+    #    for character in extractedCharactersMap[key]:
+    #        sf.drawImage(character,key)
+
+    flatImages = []
+    classifications = []
+    for key in sorted( extractedCharactersMap ):            #za svaki kljuc koji je pronadjen
+        for i in range(len(extractedCharactersMap[key])):   #za svaku sliku/konturu
+            image = extractedCharactersMap[key][i]          #preuzmi sliku
+            classifications.append(ord(key))                #dodaj u listu integer vrednost
+                                                            #karaktera
+
+            #promeni velicinu slike da sve budu iste
+            float_image_reshaped = image.reshape((1,IMAGE_WIDTH*IMAGE_HEIGHT))
+
+            #pretvori sliku u float niz
+            float_image_reshaped = np.float32(float_image_reshaped)
+
+            #dodaj niz u sve slike
+            flatImages.append(float_image_reshaped)
+            
+            #provera velicine :=> dobijao nes sitno tipa 20 elemenata u nizu
+            #sad se dobija >=~400
+            print(len(float_image_reshaped[0]))
+            #sf.drawImage(float_image,"20x30")
+
+            #TODO: Sacuvaj sve kao np.savetxt da mozes posle da iscitas
+
+createTrainingData()
