@@ -20,7 +20,7 @@ def KNNTraining():
         #za sada je sitan fajl posto nisam imao nesto specijalno
         #karaktera sa tablica da treniram mrezu
         #do kraja ce se valjda dodati jos
-        classifications = np.loadtxt("classes.txt",np.float32)    
+        classifications = np.loadtxt("classifications_djuka.txt",np.float32)    
     except:
         print("Classification data not provided.",
               " Create classification data and try again.")
@@ -28,7 +28,7 @@ def KNNTraining():
 
     try:
         #@see classes.txt s tim da su flats vrednosti karaktera na SLICI
-        flats = np.loadtxt("flats.txt",np.float32)
+        flats = np.loadtxt("flat_images_djuka.txt",np.float32)
     except:
         print("Flat image file data is not provided.",
               " Create flat image file data and try again.")
@@ -58,6 +58,7 @@ def createTrainingData():
     thresholds = []
     extractedCharactersMap = {}     #mapa pronadjenih karaktera
     goodContoursMap = {}            #mapa dobrih kontura za karaktere
+    numpyFlatImages =  np.empty((0, IMAGE_WIDTH * IMAGE_HEIGHT))
     
     for i in range(len(const.TRAINING_IMAGE_NAMES)):
         pth = ( const.IMAGES_FOLDER +
@@ -104,28 +105,25 @@ def createTrainingData():
         for c in range(len(contours)):
             cArea = cv2.contourArea(contours[c])
             if(cArea > meanContourArea):
-                #napravi sliku za proveru boundinga
-                #boundingImage = imgs[i].copy()
-                #prikazi taj original
-                #cv2.imshow("oridjidji",boundingImage)
-
+                
                 #uzmi atribute kvadrata oko konture
                 x,y,w,h = cv2.boundingRect(contours[c])
                 karakter = thImage[y:y+h,x:x+w]
                 karakter = cv2.resize(karakter,(IMAGE_WIDTH,IMAGE_HEIGHT))
                 extractedCharacterList.append(karakter)
 
+                #crtanje uokvirenog karaktera
+                #boundingImage = imgs[i].copy()
+                #cv2.rectangle(boundingImage,(x,y),(x+w,y+h),(0,0,255),1)
+                #cv2.imshow("rect",boundingImage)
+                #cv2.waitKey(0)
+                #cv2.destroyAllWindows()
+                
                 #prikazi karakter za proveru
                 #cv2.imshow("letter",karakter)
                 #cv2.waitKey(0)
                 #cv2.destroyAllWindows()
-                #nacrtaj kvadrat na slici
-                #cv2.rectangle(boundingImage,(x,y),(x+w,y+h),(0,255,0),2)
-
-                #prikazi sliku sa kvadratom
-                #cv2.imshow("rect",boundingImage)
-                #cv2.waitKey(0)
-                #cv2.destroyAllWindows()
+                
                 goodContourList.append(contours[c])
         extractedCharactersMap[const.TRAINING_IMAGE_NAMES[i]] = extractedCharacterList
         goodContoursMap[const.TRAINING_IMAGE_NAMES[i]] = goodContourList
@@ -142,11 +140,11 @@ def createTrainingData():
     flatImages = []
     classifications = []
     for key in sorted( extractedCharactersMap ):            #za svaki kljuc koji je pronadjen
+                                                            #dodaj u listu integer vrednost
         for i in range(len(extractedCharactersMap[key])):   #za svaku sliku/konturu
             image = extractedCharactersMap[key][i]          #preuzmi sliku
-            classifications.append(ord(key))                #dodaj u listu integer vrednost
                                                             #karaktera
-
+            classifications.append(ord(key))
             #promeni velicinu slike da sve budu iste
             float_image_reshaped = image.reshape((1,IMAGE_WIDTH*IMAGE_HEIGHT))
 
@@ -158,9 +156,17 @@ def createTrainingData():
             
             #provera velicine :=> dobijao nes sitno tipa 20 elemenata u nizu
             #sad se dobija >=~400
-            print(len(float_image_reshaped[0]))
-            #sf.drawImage(float_image,"20x30")
+            #print(len(float_image_reshaped[0]))
+            #sf.drawImage(float_image_reshaped,"20x30")
+            numpyFlatImages= np.append(numpyFlatImages,float_image_reshaped,0)
 
-            #TODO: Sacuvaj sve kao np.savetxt da mozes posle da iscitas
+    floatClassifications = np.array(classifications,np.float32)
+    npArr = floatClassifications.reshape((floatClassifications.size,1))
 
-createTrainingData()
+    np.savetxt("classifications_djuka.txt",npArr)
+    np.savetxt("flat_images_djuka.txt",numpyFlatImages)
+
+    print("Training data created. -> [classifications_djuka.txt,flat_images_djuka.txt]")
+
+#
+#createTrainingData()
