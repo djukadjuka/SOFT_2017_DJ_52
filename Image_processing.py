@@ -75,8 +75,8 @@ def get_region_ratios(all_regions):                      #...(3)
         bbox = region.bbox
 
         #create width and height for region
-        h = bbox[2] - bbox[0]
-        w = bbox[3] - bbox[1]
+        w = bbox[2] - bbox[0]
+        h = bbox[3] - bbox[1]
 
         #create the ratio
         ratio = float(h)/w
@@ -89,15 +89,15 @@ def get_region_bounds(all_ratios):                      #...(4)
     #parameters gained after testing
     #and trial and error in previous scraped project
     n,bins,patches = plt.hist(all_ratios,bins=range(0,10,3))
-    #plt.show()     #-->for showing the histogram for proof
+    plt.show()     #-->for showing the histogram for proof
     
     #get the index where the histogram
     #has a maximum y value
-    max_bins = np.wher(n==n.max())
+    max_bins = np.where(n==n.max())
     min_max_pairs = []
     for b in max_bins[0]:               #because the 0th
                                         #element is an array
-        min_max_pair = [bins[b],bins[b+1]]
+        min_max_pair = [bins[b],bins[b+1
         min_max_pairs.append(min_max_pair)
     return min_max_pairs
 
@@ -113,12 +113,24 @@ def get_target_regions(all_regions,min_max_pairs):
         maxx = min_max_pair[1]
         for region in all_regions:
             bbox = region.bbox
-            h = bbox[2] - bbox[0]
-            w = bbox[3] - bbox[1]
+            w = bbox[2] - bbox[0]
+            h = bbox[3] - bbox[1]
             ratio = float(h) / w
             if ratio >= minn and ratio <= maxx:
                 good_regions.append(region)
     return good_regions
 
+def get_cropped_images(good_regions_list, thresh_image):
+    cropped_images= []
+
+    for region_list in good_regions_list:
+        for region in region_list:
+            bbox = reg.bbox
+            x = bbox[0]
+            y = bbox[1]
+            w = bbox[2]
+            h = bbox[3]
+            cropped = thresh_image.copy()[x:w,y:h]
+            
 #Image_processing.py
 #Import -- ip
