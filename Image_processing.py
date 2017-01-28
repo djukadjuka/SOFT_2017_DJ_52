@@ -147,5 +147,13 @@ def get_cropped_images(good_regions_list, thresh_image):
         cropped_images.append(cropped)
     return cropped_images
 
+#flatten images to array of pixels
+#for optimization of k nearest neighbour
+def flatten_image(thresh_crop_image):
+    image = thresh_crop_image.copy()
+    flat_image = image.reshape((1,image.shape[0]*image.shape[1]))
+    flat_image = np.float32(flat_image)
+    return flat_image
+
 #Image_processing.py
 #Import -- ip
