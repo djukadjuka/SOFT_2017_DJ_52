@@ -55,15 +55,33 @@ def startup():
         if TESTING == 1:
             impress.draw_regions_on_image("GOOD_REGIONS",original_image,good_regions)
 
-        cropped = ip.get_cropped_images(good_regions, thresholded_image)
+        #getting cropped images
+        cropped_images = ip.get_cropped_images(good_regions, thresholded_image)
 
         if TESTING == 1:
             titles = []
-            for i in range(len(cropped)):
+            for i in range(len(cropped_images)):
                 titles.append(str(i))
-            impress.show_multiple_images(titles,cropped)
+            impress.show_multiple_images(titles,cropped_images)
+
+        #forming cropped images as flat images
+        flat_crops = []
+        for crop in cropped_images:
+            flat_crops.append(ip.flatten_image(crop))
+
+        if TESTING == 1:
+            titles = []
+            for i in range(len(flat_crops)):
+                titles.append(str(i))
+            impress.show_multiple_images(titles,flat_crops)
         
 startup()
+
+#save all extracted training data
+#to default files for classifications
+#and flat images
+def save_data():
+    
 
 #Training_data_creation.py
 #import -- as tdc
