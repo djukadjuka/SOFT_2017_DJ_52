@@ -13,7 +13,7 @@ import Image_processing as ip
 import Image_presentation as impress
 
 TESTING = 1
-IMAGES = [0,1,2,3,4]
+IMAGES = [12]
 
 def startup():
 
@@ -54,6 +54,11 @@ def startup():
 
         if TESTING == 1:
             impress.draw_regions_on_image("GOOD_REGIONS",original_image,good_regions)
+
+        cropped = ip.get_cropped_images(good_regions, thresholded_image)
+
+        
+        
 startup()
 
 #Training_data_creation.py

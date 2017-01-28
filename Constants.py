@@ -4,11 +4,12 @@
 #MISCELLANIOUS CONSTANTS#
 #########################
 TRAINING_DATA_IMAGE_SUFFIX = ".JPG"
+TRAINING_DATA_FOLDER_NAME = "TRAINING_IMAGES_2/"
 
 #############
 #IMAGE SIZES#
 #############
-RESIZE_WIDTH = 300      #For resizing processed images, contours etc...
+RESIZE_WIDTH = 1100      #For resizing processed images, contours etc...
 RESIZE_HEIGHT = 150     #
 
 LETTER_WIDTH = 30       #For resizing individual letters when creating training data
@@ -17,7 +18,7 @@ LETTER_HEIGHT = 20      #
 #######
 #FILES#
 #######
-TRAINIG_DATA_IMAGE_NAMES = ["A","B","C","D","E",
+TRAINING_DATA_IMAGE_NAMES = ["A","B","C","D","E",
                              "F","G","H","I","J",
                              "K","L","M","N","O",
                              "P","Q","R","S","T",

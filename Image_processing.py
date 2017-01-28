@@ -93,7 +93,7 @@ def get_region_bounds(all_ratios,TEST_FLAG):                      #...(4)
     #parameters gained after testing
     #and trial and error in previous scraped project
     bns = np.linspace(0,20,41)
-    print(bns)
+    #print(bns)
     n,bins,patches = plt.hist(all_ratios,bins=bns)
     if TEST_FLAG == 1:
         plt.show()     #-->for showing the histogram for proof
@@ -128,7 +128,7 @@ def get_target_regions(all_regions,min_max_pairs,mean_size):
             h = bbox[3] - bbox[1]
             ratio = float(h) / w
             region_size = h*w
-            if ratio >= minn and ratio <= maxx and region_size >= mean_size:
+            if ratio >= minn and ratio <= maxx and region_size >= mean_size-mean_size/2:
                 good_regions.append(region)
     return good_regions
 
