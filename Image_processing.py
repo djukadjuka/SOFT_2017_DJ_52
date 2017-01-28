@@ -84,12 +84,13 @@ def get_region_ratios(all_regions):                      #...(3)
     return all_ratios
 
 #create top and bottom bounds for a region group
-def get_region_bounds(all_ratios):                      #...(4)
+def get_region_bounds(all_ratios,TEST_FLAG):                      #...(4)
 
     #parameters gained after testing
     #and trial and error in previous scraped project
-    n,bins,patches = plt.hist(all_ratios,bins=range(0,10,3))
-    plt.show()     #-->for showing the histogram for proof
+    n,bins,patches = plt.hist(all_ratios,bins=range(0,20,1))
+    if TEST_FLAG == 1:
+        plt.show()     #-->for showing the histogram for proof
     
     #get the index where the histogram
     #has a maximum y value
@@ -99,6 +100,10 @@ def get_region_bounds(all_ratios):                      #...(4)
                                         #element is an array
         min_max_pair = [bins[b],bins[b+1]]
         min_max_pairs.append(min_max_pair)
+
+    if TEST_FLAG == 1:
+        print(min_max_pairs)
+        
     return min_max_pairs
 
 #get the regions that are within the bounds

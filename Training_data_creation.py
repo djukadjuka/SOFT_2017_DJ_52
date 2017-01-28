@@ -13,7 +13,7 @@ import Image_processing as ip
 import Image_presentation as impress
 
 TESTING = 1
-IMAGES = [0,1,2]
+IMAGES = [2]
 
 def startup():
 
@@ -43,7 +43,8 @@ def startup():
         #getting ratios
         all_ratios = ip.get_region_ratios(all_regions)
 
-        
+        #getting min max pairs
+        min_max_pairs = ip.get_region_bounds(all_ratios,TESTING)
         
 startup()
 
