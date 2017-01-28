@@ -131,6 +131,9 @@ def get_cropped_images(good_regions_list, thresh_image):
             w = bbox[2]
             h = bbox[3]
             cropped = thresh_image.copy()[x:w,y:h]
-            
+            cropped = cv2.resize(cropped,(con.LETTER_WIDTH,con.LETTER_HEIGHT))
+            cropped_images.append(cropped)
+    return cropped
+
 #Image_processing.py
 #Import -- ip
