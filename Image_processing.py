@@ -106,6 +106,19 @@ def get_region_bounds(all_ratios):                      #...(4)
 #picked up interfierence that was not opened
     #may be overkill....
 def get_target_regions(all_regions,min_max_pairs):
-    pass
+    good_regions = []
+    for min_max_pair in min_max_pairs:  #the histogram may have
+                                        #two same maximum values
+        minn = min_max_pair[0]
+        maxx = min_max_pair[1]
+        for region in all_regions:
+            bbox = region.bbox
+            h = bbox[2] - bbox[0]
+            w = bbox[3] - bbox[1]
+            ratio = float(h) / w
+            if ratio >= minn and ratio <= maxx:
+                good_regions.append(region)
+    return good_regions
+
 #Image_processing.py
 #Import -- ip
