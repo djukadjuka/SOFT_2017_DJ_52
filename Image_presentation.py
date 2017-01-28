@@ -9,8 +9,26 @@ from skimage.measure import label
 from skimage.exposure import histogram
 
 def show_multiple_images(titles,images):
+    x = 0
+    y = 0
+    max_x = 1000
+    max_y = 600
     for i in range(len(images)):
+        try:
+            h,w,c = images[i].shape
+        except:
+            h,w = images[i].shape
+        if i!=0:
+            if y+h > max_y:
+                y = 0
+                if x+w > max_x:
+                    x = 0
+                else:
+                    x += w + 100
+            else:
+                y+= h+40
         cv2.imshow(titles[i],images[i])
+        cv2.moveWindow(titles[i],x,y)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 

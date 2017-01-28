@@ -13,7 +13,7 @@ import Image_processing as ip
 import Image_presentation as impress
 
 TESTING = 1
-IMAGES = [12]
+IMAGES = [0]
 
 def startup():
 
@@ -57,7 +57,11 @@ def startup():
 
         cropped = ip.get_cropped_images(good_regions, thresholded_image)
 
-        
+        if TESTING == 1:
+            titles = []
+            for i in range(len(cropped)):
+                titles.append(str(i))
+            impress.show_multiple_images(titles,cropped)
         
 startup()
 

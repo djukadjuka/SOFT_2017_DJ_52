@@ -108,7 +108,7 @@ def get_region_bounds(all_ratios,TEST_FLAG):                      #...(4)
         min_max_pairs.append(min_max_pair)
 
     if TEST_FLAG == 1:
-        print(min_max_pairs)
+        print("MIN MAX PAIRS [min,max]: ",min_max_pairs)
         
     return min_max_pairs
 
@@ -135,17 +135,17 @@ def get_target_regions(all_regions,min_max_pairs,mean_size):
 def get_cropped_images(good_regions_list, thresh_image):
     cropped_images= []
 
-    for region_list in good_regions_list:
-        for region in region_list:
-            bbox = reg.bbox
-            x = bbox[0]
-            y = bbox[1]
-            w = bbox[2]
-            h = bbox[3]
-            cropped = thresh_image.copy()[x:w,y:h]
-            cropped = cv2.resize(cropped,(con.LETTER_WIDTH,con.LETTER_HEIGHT))
-            cropped_images.append(cropped)
-    return cropped
+    for region in good_regions_list:
+        #for region in region_list:
+        bbox = region.bbox
+        x = bbox[0]
+        y = bbox[1]
+        w = bbox[2]
+        h = bbox[3]
+        cropped = thresh_image.copy()[x:w,y:h]
+        cropped = cv2.resize(cropped,(con.LETTER_WIDTH,con.LETTER_HEIGHT))
+        cropped_images.append(cropped)
+    return cropped_images
 
 #Image_processing.py
 #Import -- ip
