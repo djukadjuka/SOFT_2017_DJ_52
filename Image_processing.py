@@ -69,6 +69,7 @@ def get_region_ratios(all_regions):                      #...(3)
 
     #list for storing all ratios
     all_ratios = []
+    mean_size = 0
     for region in all_regions:
 
         #get bounding box from current region
@@ -80,15 +81,20 @@ def get_region_ratios(all_regions):                      #...(3)
 
         #create the ratio
         ratio = float(h)/w
+        mean_size += h*w
         all_ratios.append(ratio)
-    return all_ratios
+
+    mean_size /= len(all_regions)
+    return all_ratios,mean_size
 
 #create top and bottom bounds for a region group
 def get_region_bounds(all_ratios,TEST_FLAG):                      #...(4)
 
     #parameters gained after testing
     #and trial and error in previous scraped project
-    n,bins,patches = plt.hist(all_ratios,bins=range(0,20,1))
+    bns = np.linspace(0,20,41)
+    print(bns)
+    n,bins,patches = plt.hist(all_ratios,bins=bns)
     if TEST_FLAG == 1:
         plt.show()     #-->for showing the histogram for proof
     
@@ -110,7 +116,7 @@ def get_region_bounds(all_ratios,TEST_FLAG):                      #...(4)
 #because the threshed image may have
 #picked up interfierence that was not opened
     #may be overkill....
-def get_target_regions(all_regions,min_max_pairs):
+def get_target_regions(all_regions,min_max_pairs,mean_size):
     good_regions = []
     for min_max_pair in min_max_pairs:  #the histogram may have
                                         #two same maximum values
@@ -121,7 +127,8 @@ def get_target_regions(all_regions,min_max_pairs):
             w = bbox[2] - bbox[0]
             h = bbox[3] - bbox[1]
             ratio = float(h) / w
-            if ratio >= minn and ratio <= maxx:
+            region_size = h*w
+            if ratio >= minn and ratio <= maxx and region_size >= mean_size:
                 good_regions.append(region)
     return good_regions
 

@@ -13,7 +13,7 @@ import Image_processing as ip
 import Image_presentation as impress
 
 TESTING = 1
-IMAGES = [2]
+IMAGES = [0,1,2,3,4]
 
 def startup():
 
@@ -41,11 +41,19 @@ def startup():
         labeled_image,all_regions = ip.get_labeled_regions(thresholded_image)
 
         #getting ratios
-        all_ratios = ip.get_region_ratios(all_regions)
+        all_ratios,mean_size = ip.get_region_ratios(all_regions)
 
         #getting min max pairs
         min_max_pairs = ip.get_region_bounds(all_ratios,TESTING)
-        
+
+        #overkilling for target regions
+        good_regions = ip.get_target_regions(all_regions,min_max_pairs,mean_size)
+
+        if TESTING == 1:
+            impress.draw_regions_on_image("ALL_REGIONS",original_image,all_regions)
+
+        if TESTING == 1:
+            impress.draw_regions_on_image("GOOD_REGIONS",original_image,good_regions)
 startup()
 
 #Training_data_creation.py
