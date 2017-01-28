@@ -17,6 +17,8 @@ IMAGES = [0]
 
 def startup():
 
+    flat_images_map = {}
+
     images = []
 
     if TESTING == 1:                #if in testing mode
@@ -74,14 +76,29 @@ def startup():
             for i in range(len(flat_crops)):
                 titles.append(str(i))
             impress.show_multiple_images(titles,flat_crops)
-        
+
+        #mapping cropped images
+        flat_images_map[char] = flat_crops
+    
+    classifications_list = []
+    print(con.LETTER_WIDTH*con.LETTER_HEIGHT)
+    numpy_flat_images = np.empty((0,con.LETTER_WIDTH*con.LETTER_HEIGHT))
+    for key in flat_images_map:
+        classifications_list.append(key)
+        print("{",key,"} contains :", len(flat_images_map[key])," images.")    
+        for crop in flat_images_map[key]:
+            
+            numpy_flat_images = np.append(numpy_flat_images,crop[0])
+            print(numpy_flat_images)
+
+            
 startup()
 
 #save all extracted training data
 #to default files for classifications
 #and flat images
 def save_data():
-    
+    pass
 
 #Training_data_creation.py
 #import -- as tdc
