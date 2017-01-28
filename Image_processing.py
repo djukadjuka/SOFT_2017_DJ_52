@@ -97,7 +97,7 @@ def get_region_bounds(all_ratios):                      #...(4)
     min_max_pairs = []
     for b in max_bins[0]:               #because the 0th
                                         #element is an array
-        min_max_pair = [bins[b],bins[b+1
+        min_max_pair = [bins[b],bins[b+1]]
         min_max_pairs.append(min_max_pair)
     return min_max_pairs
 
