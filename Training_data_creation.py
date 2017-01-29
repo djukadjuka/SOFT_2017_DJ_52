@@ -23,6 +23,30 @@ def save_data(np_float_classifications_array,np_flat_images_array):
     np.savetxt(con.CLASSIFICATIONS_FILE,np_float_classifications_array)
     np.savetxt(con.FLAT_IMAGES_FILE,np_flat_images_array)
 
+def load_data():
+    classifications = np.loadtxt(con.CLASSIFICATIONS_FILE)
+    flat_images = np.loadtxt(con.FLAT_IMAGES_FILE)
+    return classifications,flat_images
+
+def check_loaded_images():
+    classifications,flat_images = load_data()
+
+    i = 0
+
+    while i < len(flat_images):
+        print("Iteration : [",i,"]")
+        wh = con.LETTER_WIDTH*con.LETTER_HEIGHT
+        j = i
+        i += wh
+        lst = []
+        while j < i:
+            lst.append(flat_images[j])
+            j+=1
+        print("Extracted list : ",lst)
+            
+    
+    
+
 def startup():
 
     flat_images_map = {}
@@ -109,6 +133,7 @@ def startup():
     #save the data
     save_data(flat_classifications, numpy_flat_images)
 
+    check_loaded_images()
     
 startup()
 
