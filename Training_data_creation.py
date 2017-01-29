@@ -15,6 +15,14 @@ import Image_presentation as impress
 TESTING = 1
 IMAGES = [0]
 
+
+#save all extracted training data
+#to default files for classifications
+#and flat images
+def save_data(np_float_classifications_array,np_flat_images_array):
+    np.savetxt(con.CLASSIFICATIONS_FILE,np_float_classifications_array)
+    np.savetxt(con.FLAT_IMAGES_FILE,np_flat_images_array)
+
 def startup():
 
     flat_images_map = {}
@@ -81,24 +89,28 @@ def startup():
         flat_images_map[char] = flat_crops
     
     classifications_list = []
-    print(con.LETTER_WIDTH*con.LETTER_HEIGHT)
+    #print(con.LETTER_WIDTH*con.LETTER_HEIGHT)
     numpy_flat_images = np.empty((0,con.LETTER_WIDTH*con.LETTER_HEIGHT))
     for key in flat_images_map:
-        classifications_list.append(key)
-        print("{",key,"} contains :", len(flat_images_map[key])," images.")    
+        
+        if TESTING == 1:
+            print("{",key,"} contains :", len(flat_images_map[key])," images.")    
         for crop in flat_images_map[key]:
-            
+            classifications_list.append(ord(key))
             numpy_flat_images = np.append(numpy_flat_images,crop[0])
-            print(numpy_flat_images)
 
-            
+        if TESTING == 1:
+                print(len(numpy_flat_images))
+
+    #flatten the classification list
+    flat_classifications = np.array(classifications_list,np.float32)
+    flat_classifications = flat_classifications.reshape((flat_classifications.size,1))
+
+    #save the data
+    save_data(flat_classifications, numpy_flat_images)
+
+    
 startup()
-
-#save all extracted training data
-#to default files for classifications
-#and flat images
-def save_data():
-    pass
 
 #Training_data_creation.py
 #import -- as tdc
