@@ -27,28 +27,6 @@ def load_data():
     classifications = np.loadtxt(con.CLASSIFICATIONS_FILE)
     flat_images = np.loadtxt(con.FLAT_IMAGES_FILE)
     return classifications,flat_images
-
-def check_loaded_images():
-    classifications,flat_images = load_data()
-
-    i = 0
-    lst = []
-    w = con.LETTER_WIDTH
-    h = con.LETTER_HEIGHT
-    while i < h*14:
-        j = 0
-        mini_lst = []
-        while j< w:
-            mini_lst.append(flat_images[i*w+j])
-            j+=1
-        arr = np.asarray(mini_lst)
-        lst.append(arr)
-        i+=1
-    np_arr = np.asarray(lst,np.float32)
-    
-    cv2.imshow("arr",np_arr)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
     
 def startup():
 
@@ -135,8 +113,6 @@ def startup():
 
     #save the data
     save_data(flat_classifications, numpy_flat_images)
-
-    check_loaded_images()
     
 startup()
 
