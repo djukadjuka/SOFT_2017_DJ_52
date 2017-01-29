@@ -25,6 +25,20 @@ def try_training():
     KNN.setDefaultK(1)
     KNN.train(flat_images,cv2.ml.ROW_SAMPLE,classifications)    
 
-try_training()
+def try_recognition():
+    test_image = "TRAINING_TEST.jpg"
 
+    original, original_r, gray, gray_r, thresh, thresh_fix = ip.load_and_get_images(test_image)
+    
+    labeled_image,all_regions = ip.get_labeled_regions(thresh_fix)
+    ratios,mean_size  = ip.get_region_ratios(all_regions)
+    min_max_pairs = ip.get_region_bounds(ratios,0)
+    good_regions = ip.get_target_regions(all_regions,min_max_pairs,mean_size)
+    cropped_images = ip.get_cropped_images(good_regions,thresh_fix)
+    cv2.imshow("crop",cropped_images[0])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+try_training()
+try_recognition()
 #KNN.py
