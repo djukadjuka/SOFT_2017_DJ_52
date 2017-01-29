@@ -151,7 +151,7 @@ def get_cropped_images(good_regions_list, thresh_image):
 #for optimization of k nearest neighbour
 def flatten_image(thresh_crop_image):
     image = thresh_crop_image.copy()
-    flat_image = image.reshape((1,image.shape[0]*image.shape[1]))
+    flat_image = image.reshape((1,con.LETTER_WIDTH*con.LETTER_HEIGHT))
     flat_image = np.float32(flat_image)
     return flat_image
 

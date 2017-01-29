@@ -12,7 +12,7 @@ import Constants as con
 import Image_processing as ip
 import Image_presentation as impress
 
-TESTING = 1
+TESTING = 0
 IMAGES = [0]
 
 
@@ -99,10 +99,11 @@ def startup():
     for key in flat_images_map:
         
         if TESTING == 1:
-            print("{",key,"} contains :", len(flat_images_map[key])," images.")    
-        for crop in flat_images_map[key]:
+            print("{",key,"} contains :", len(flat_images_map[key])," images.")
+            
+        for i in range(len(flat_images_map[key])):
             classifications_list.append(ord(key))
-            numpy_flat_images = np.append(numpy_flat_images,crop[0])
+            numpy_flat_images = np.append(numpy_flat_images,flat_images_map[key][i],0)
 
         if TESTING == 1:
                 print(len(numpy_flat_images))
