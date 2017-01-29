@@ -13,7 +13,7 @@ import Image_processing as ip
 import Image_presentation as impress
 
 TESTING = 0
-IMAGES = [0]
+IMAGES = [16]
 
 
 #save all extracted training data

@@ -26,7 +26,7 @@ def try_training():
     KNN.train(flat_images,cv2.ml.ROW_SAMPLE,classifications)    
 
 def try_recognition():
-    test_image = "TRAINING_TEST.jpg"
+    test_image = "TRAINING_Q.jpg"
 
     original, original_r, gray, gray_r, thresh, thresh_fix = ip.load_and_get_images(test_image)
     
@@ -35,9 +35,26 @@ def try_recognition():
     min_max_pairs = ip.get_region_bounds(ratios,0)
     good_regions = ip.get_target_regions(all_regions,min_max_pairs,mean_size)
     cropped_images = ip.get_cropped_images(good_regions,thresh_fix)
+
     cv2.imshow("crop",cropped_images[0])
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    
+    flat_images = []
+    for img in cropped_images:
+        flat = ip.flatten_image(img)
+
+        flat = np.asarray(flat,dtype="float32")
+        flat_images.append(flat)
+        
+        cv2.imshow("crop",flat)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    #ret, results, neighbours ,dist = knn.find_nearest(newcomer, 3)
+    ret, res, neig, dist = KNN.findNearest(flat_images[0],5)
+    print(ret,res,neig,dist)
+    print(chr(int(ret)))
     
 try_training()
 try_recognition()
