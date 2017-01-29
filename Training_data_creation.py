@@ -32,21 +32,24 @@ def check_loaded_images():
     classifications,flat_images = load_data()
 
     i = 0
-
-    while i < len(flat_images):
-        print("Iteration : [",i,"]")
-        wh = con.LETTER_WIDTH*con.LETTER_HEIGHT
-        j = i
-        i += wh
-        lst = []
-        while j < i:
-            lst.append(flat_images[j])
+    lst = []
+    w = con.LETTER_WIDTH
+    h = con.LETTER_HEIGHT
+    while i < h*14:
+        j = 0
+        mini_lst = []
+        while j< w:
+            mini_lst.append(flat_images[i*w+j])
             j+=1
-        print("Extracted list : ",lst)
-            
+        arr = np.asarray(mini_lst)
+        lst.append(arr)
+        i+=1
+    np_arr = np.asarray(lst,np.float32)
     
+    cv2.imshow("arr",np_arr)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     
-
 def startup():
 
     flat_images_map = {}
