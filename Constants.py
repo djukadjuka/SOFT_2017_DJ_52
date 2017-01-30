@@ -12,6 +12,9 @@ TRAINING_DATA_FOLDER_NAME = "TRAINING_IMAGES_2/"
 RESIZE_WIDTH = 1100      #For resizing processed images, contours etc...
 RESIZE_HEIGHT = 150     #
 
+REC_RESIZE_WIDTH = 800
+REC_RESIZE_HEIGHT = 300
+
 LETTER_WIDTH = 30       #For resizing individual letters when creating training data
 LETTER_HEIGHT = 20      #
 
