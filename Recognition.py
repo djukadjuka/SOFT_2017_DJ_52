@@ -61,9 +61,15 @@ def load_and_process_LPI(image_name):
     
 
 def extract_regions_LPI(LPI_thresh):
-    pass
+    LPI_labeled, LPI_regions = ip.get_labeled_regions(LPI_thresh)
+    return LPI_labeled, LPI_regions
 
 def show_regions_LPI(LPI_original, LPI_regions):
-    pass
+    impress.draw_regions_on_image("Regions",LPI_original,LPI_regions)
+
+def prep_for_recognition(LPI_regions,LPI_thresh):
+    cropped_region_images = []
+
+    return cropped_region_images
 
 #Recognition.py
