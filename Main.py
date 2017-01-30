@@ -14,6 +14,8 @@ import Image_presentation as impress
 import KNN as kn
 import Recognition as rec
 
+TESTING = 1
+
 def get_license_plate_image_name(x):
     LPI_name = (con.LICENSE_PLATES_FOLDER +
                 con.LICENSE_PLATE_IMAGE_PREFIX +
@@ -21,6 +23,31 @@ def get_license_plate_image_name(x):
                 con.LICENSE_PLATE_IMAGE_SUFFIX)
     return LPI_name
 
+#display flag to show specific images
+#   0   -   Show no images
+#   1   -   Show all images
+#   2   -   Show resized images
+#   3   -   Show original images
+def get_images(LPI_name, display_flag = 0):
+    LPI_original, LPI_original_resized, LPI_gray, LPI_gray_resized, LPI_thresh, LPI_thresh_resized = rec.load_and_process_LPI(LPI_name)
+
+    images = None
+    titles = None
+    if display_flag == 1 and TESTING == 1:
+        images = [LPI_original, LPI_original_resized, LPI_gray, LPI_gray_resized, LPI_thresh, LPI_thresh_resized]
+        titles = ["Original","Original Resized","Grayscale","Grayscale resized","Threshold","Threshold resized"]
+    elif display_flag == 2 and TESTING == 1:
+        images = [LPI_original_resized, LPI_gray_resized, LPI_thresh_resized]
+        titles = ["Original Resized","Grayscale resized","Threshold resized"]
+    elif display_flag == 3 and TESTING == 1:
+        images = [LPI_original, LPI_gray, LPI_thresh]
+        titles = ["Original","Grayscale","Threshold"]
+
+    if images is not None:
+        impress.show_multiple_images(titles,images)
+
+    return LPI_original,LPI_original_resized, LPI_gray, LPI_gray_resized, LPI_thresh, LPI_thresh_resized
+    
 def Main():
 
     training_success = kn.try_training()
@@ -30,6 +57,13 @@ def Main():
         return
     else:
         print("KNN training successfull!")
+
+    LPI_name = get_license_plate_image_name(1)
+    LPI_original, LPI_original_resized, LPI_gray, LPI_gray_resized, LPI_thresh, LPI_thresh_resized = get_images(LPI_name,3)
+    LPI_labeled, LPI_regions = rec.extract_regions_LPI(LPI_thresh_resized)
+
+    if TESTING == 1:
+        rec.show_regions_LPI(LPI_original_resized,LPI_regions)
     
 Main()
 
