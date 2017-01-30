@@ -23,14 +23,14 @@ def try_training():
         classifications = np.loadtxt(con.CLASSIFICATIONS_FILE)
     except:
         print("Classifications file not found/not loaded properly. Check files and try again.")
-        return
+        return None
 
     #reading training images file
     try:
         flat_images = np.loadtxt(con.FLAT_IMAGES_FILE)
     except:
         print("Training file not found/not loaded properly. Check files and try again.")
-        return
+        return None
 
     #reshaping classifications to a column
     #needs to be a column for KNN object training
@@ -46,6 +46,7 @@ def try_training():
     #train the KNN object
     #   TRAINING DATA,  SAMPLING BY ROW,    CLASSIFICATION DATA
     KNN.train(flat_images,cv2.ml.ROW_SAMPLE,classifications)    
+    return 1
 
 #testing out basic recognition on single
 #preprocessed fixed image

@@ -5,6 +5,7 @@
 #########################
 TRAINING_DATA_IMAGE_SUFFIX = ".JPG"
 TRAINING_DATA_FOLDER_NAME = "TRAINING_IMAGES_2/"
+LICENSE_PLATES_FOLDER = "LICENSE_PLATES/"
 
 #############
 #IMAGE SIZES#
@@ -30,6 +31,10 @@ TRAINING_DATA_IMAGE_NAMES = ["A","B","C","D","E",
                              "4","5","6","7","8","9"]
 CLASSIFICATIONS_FILE = "PREMIUM_CLASSIFICATIONS.txt"
 FLAT_IMAGES_FILE = "PREMIUM_FLAT_IMAGES.txt"
+
+LICENSE_PLATE_IMAGES = ["1","2","3","4","5","6","7"]
+LICENSE_PLATE_IMAGE_PREFIX = "LPI_"
+LICENSE_PLATE_IMAGE_SUFFIX = ".jpg"
 
 #Constants.py
 #Import -- as con
