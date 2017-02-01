@@ -137,6 +137,22 @@ class character_in_plate(object):
         return self.flat_image
 
 def form_char_list_by_flats(crop_flat_map):
+
+    object_list = []
+
+    for key in crop_flat_map:
+        info_list = []
+        cropped_image = crop_flat_map[key][0]   #extract cropped_image
+        flat_image = crop_flat_map[key][1]      #extract flat_image
+
+        ret, res, neig, dist = kn.KNN.findNearest(flat_image,1)
+        print("<-----------> KEY : [",key,"] <----------->")
+        print("\t DISTANCE : [",dist,"]")
+        print("\t NEIGHBOURS : [",neig,"]")
+        print("\t RESULT : [",res,"]")
+        print("\t RETURN : [",ret,"]")
+        print("\t CHAR : [",chr(int(ret)),"]")
+    
     pass
 
 #Recognition.py
