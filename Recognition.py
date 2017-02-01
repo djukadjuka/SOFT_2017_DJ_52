@@ -101,11 +101,11 @@ def map_crops_with_flats(cropped_images,flat_images,TEST_FLAG):
         crop_flat_pair.append(flat_images[i])
         crop_flat_map[i] = crop_flat_pair
 
-    if TEST_FLAG == 1:
-        for key in crop_flat_map:
-            titles = [str(key)+" - Original", str(key) + " - flat"]
-            imgs = crop_flat_map[key]
-            impress.show_multiple_images(titles,imgs)
+    #if TEST_FLAG == 1:
+    #    for key in crop_flat_map:
+    #        titles = [str(key)+" - Original", str(key) + " - flat"]
+    #        imgs = crop_flat_map[key]
+    #        impress.show_multiple_images(titles,imgs)
 
     return crop_flat_map
 
@@ -146,13 +146,17 @@ def form_char_list_by_flats(crop_flat_map):
         flat_image = crop_flat_map[key][1]      #extract flat_image
 
         ret, res, neig, dist = kn.KNN.findNearest(flat_image,1)
-        print("<-----------> KEY : [",key,"] <----------->")
-        print("\t DISTANCE : [",dist,"]")
-        print("\t NEIGHBOURS : [",neig,"]")
-        print("\t RESULT : [",res,"]")
-        print("\t RETURN : [",ret,"]")
-        print("\t CHAR : [",chr(int(ret)),"]")
-    
+        if dist[0][0] < 7000000:
+            print("<-----------> KEY : [",key,"] <----------->")
+            print("\t DISTANCE : [",dist,"]")
+            print("\t NEIGHBOURS : [",neig,"]")
+            print("\t RESULT : [",res,"]")
+            print("\t RETURN : [",ret,"]")
+            print("\t CHAR : [",chr(int(ret)),"]")
+            cv2.imshow(chr(int(ret)),cropped_image)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+        
     pass
 
 #Recognition.py
