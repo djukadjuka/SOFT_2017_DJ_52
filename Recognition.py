@@ -109,7 +109,34 @@ def map_crops_with_flats(cropped_images,flat_images,TEST_FLAG):
 
     return crop_flat_map
 
-def form_char_list_by_flats():
+#presents a POSSIBLE character in the plate
+#object should contain this information in this order
+#object[0] -> the supposed character
+#object[1] -> the supposed character in integer format
+#object[2] -> the distance from the nearest neighbour
+#object[3] -> the cropped image
+#object[4] -> the flat image
+class character_in_plate(object):
+
+    def __init__(self, obj):
+        self.plate_char = obj[0]
+        self.plate_char_int = obj[1]
+        self.KNN_distance = obj[2]
+        self.cropped_image = obj[3]
+        self.flat_image = obj[4]
+
+    def get_char():
+        return self.plate_char
+    def get_char_int():
+        return self.plate_char_int
+    def get_KNN_distance():
+        return self.KNN_distance
+    def get_cropped_image():
+        return self.cropped_image
+    def get_flat_image():
+        return self.flat_image
+
+def form_char_list_by_flats(crop_flat_map):
     pass
 
 #Recognition.py
