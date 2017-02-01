@@ -58,14 +58,18 @@ def Main():
     else:
         print("KNN training successfull!")
 
-    LPI_name = get_license_plate_image_name(1)
+    LPI_name = get_license_plate_image_name(2)
     LPI_original, LPI_original_resized, LPI_gray, LPI_gray_resized, LPI_thresh, LPI_thresh_resized = get_images(LPI_name,3)
     LPI_labeled, LPI_regions = rec.extract_regions_LPI(LPI_thresh_resized)
 
     if TESTING == 1:
         rec.show_regions_LPI(LPI_original_resized,LPI_regions)
 
-    rec.prep_for_recognition(LPI_regions,LPI_thresh_resized,LPI_original_resized,TESTING)
+    cropped_images,flat_images = rec.prep_for_recognition(LPI_regions,LPI_thresh_resized,LPI_original_resized,TESTING)
+
+    crop_flat_map = rec.map_crops_with_flats(cropped_images,flat_images,TESTING)
+    
+    rec.form_char_list_by_flats(crop_flat_map)
     
 Main()
 
