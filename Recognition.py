@@ -92,8 +92,22 @@ def prep_for_recognition(LPI_regions,LPI_thresh,LPI_original,TEST_FLAG):
 
     return cropped_region_images,flat_images
 
-def map_crops_with_flats(cropped_iamges,flat_images):
-    pass
+def map_crops_with_flats(cropped_images,flat_images,TEST_FLAG):
+    crop_flat_map = {}
+
+    for i in range(len(cropped_images)):
+        crop_flat_pair = []
+        crop_flat_pair.append(cropped_images[i])
+        crop_flat_pair.append(flat_images[i])
+        crop_flat_map[i] = crop_flat_pair
+
+    if TEST_FLAG == 1:
+        for key in crop_flat_map:
+            titles = [str(key)+" - Original", str(key) + " - flat"]
+            imgs = crop_flat_map[key]
+            impress.show_multiple_images(titles,imgs)
+
+    return crop_flat_map
 
 def form_char_list_by_flats():
     pass
