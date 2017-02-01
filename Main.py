@@ -64,6 +64,8 @@ def Main():
 
     if TESTING == 1:
         rec.show_regions_LPI(LPI_original_resized,LPI_regions)
+
+    rec.prep_for_recognition(LPI_regions,LPI_thresh_resized,LPI_original_resized,TESTING)
     
 Main()
 

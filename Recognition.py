@@ -67,8 +67,19 @@ def extract_regions_LPI(LPI_thresh):
 def show_regions_LPI(LPI_original, LPI_regions):
     impress.draw_regions_on_image("Regions",LPI_original,LPI_regions)
 
-def prep_for_recognition(LPI_regions,LPI_thresh):
+def prep_for_recognition(LPI_regions,LPI_thresh,LPI_original,TEST_FLAG):
     cropped_region_images = []
+    flat_images = []
+    
+    #cropped out all regions
+    cropped_region_images = ip.get_cropped_images(LPI_regions,LPI_thresh)
+
+    #just to show all cropped images
+    if TEST_FLAG == 1:
+        titles = []
+        for i in range(len(cropped_region_images)):
+            titles.append(str(i))
+        impress.show_multiple_images(titles,cropped_region_images)
 
     return cropped_region_images
 
