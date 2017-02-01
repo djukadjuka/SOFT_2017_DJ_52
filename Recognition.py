@@ -90,6 +90,12 @@ def prep_for_recognition(LPI_regions,LPI_thresh,LPI_original,TEST_FLAG):
             titles.append(str(i))
         impress.show_multiple_images(titles,flat_images)
 
-    return cropped_region_images
+    return cropped_region_images,flat_images
+
+def map_crops_with_flats(cropped_iamges,flat_images):
+    pass
+
+def form_char_list_by_flats():
+    pass
 
 #Recognition.py
