@@ -81,6 +81,15 @@ def prep_for_recognition(LPI_regions,LPI_thresh,LPI_original,TEST_FLAG):
             titles.append(str(i))
         impress.show_multiple_images(titles,cropped_region_images)
 
+    for cropped_image in cropped_region_images:
+        flat_images.append(ip.flatten_image(cropped_image))
+
+    if TEST_FLAG == 1:
+        titles = []
+        for i in range(len(flat_images)):
+            titles.append(str(i))
+        impress.show_multiple_images(titles,flat_images)
+
     return cropped_region_images
 
 #Recognition.py
