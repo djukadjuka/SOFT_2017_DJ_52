@@ -190,10 +190,12 @@ class character_in_plate(object):
     def get_flat_image():
         return self.flat_image
 
-def form_char_list_by_flats(crop_flat_map):
+def form_char_list_by_flats(crop_flat_map,TEST_FLAG):
 
     object_list = []
 
+    LETTERS = []
+    
     for key in crop_flat_map:
         info_list = []
         cropped_image = crop_flat_map[key][0]   #extract cropped_image
@@ -220,17 +222,40 @@ def form_char_list_by_flats(crop_flat_map):
             else:
                 char_map[chr(int(neig[0][i]))][1].append(None)
         #if we found ANY valid ranges we gotta print the data extracted
+
+        best_distance_index_key = [None,None,None]
         if valid_ranges > 0:
             for k in char_map:
                 if char_map[k][0] > 1:
-                    print("<===> GLOBAL KEY : [",key,"] <===>")
-                    print("\t==> LETTER [",k,"]")
-                    print("\t\t DISTANCE : [",char_map[k][1],"]")
-                    print("\t\t OCURRENCES : [",char_map[k][0],"]")
-                    
-                    cv2.imshow(chr(int(ret)),cropped_image)
-                    cv2.waitKey(0)
-                    cv2.destroyAllWindows()
-                    
+                    if TEST_FLAG == 1:
+                        print("<===> GLOBAL KEY : [",key,"] <===>")
+                        print("\t==> LETTER [",k,"]")
+                        print("\t\t DISTANCE : [",char_map[k][1],"]")
+                        print("\t\t OCURRENCES : [",char_map[k][0],"]")
+
+                    for i in range(len(char_map[k][1])) :
+                        if char_map[k][1][i] is not None:
+                            distance = char_map[k][1][i]
+                            if best_distance_index_key[0] is None:
+                                best_distance_index_key[0] = distance
+                                best_distance_index_key[1] = i
+                                best_distance_index_key[2] = k
+                            elif best_distance_index_key[0] > distance:
+                                best_distance_index_key[0] = distance
+                                best_distance_index_key[1] = i
+                                best_distance_index_key[2] = k
+                            
+                    if TEST_FLAG == 1:
+                        cv2.imshow(chr(int(ret)),cropped_image)
+                        cv2.waitKey(0)
+                        cv2.destroyAllWindows()
+            if TEST_FLAG == 1:
+                print(best_distance_index_key)
+
+            if best_distance_index_key[0] is not None:
+                LETTERS.append(best_distance_index_key)
+
+    for letter in LETTERS:
+        print("LETTER :",letter[2],"\tdistance :",letter[0])
 
 #Recognition.py
