@@ -46,8 +46,10 @@ def load_and_process_LPI(image_name):
                                      255,
                                      cv2.THRESH_BINARY_INV)
 
-    kernel = np.ones((1,1),
-                     np.uint8)
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(3,3))
+
+    #kernel = np.ones((1,1),
+    #                 np.uint8)
 
     LPI_t_fix = cv2.morphologyEx( LPI_thresh,
                                   cv2.MORPH_OPEN,

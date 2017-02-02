@@ -14,7 +14,7 @@ import Image_presentation as impress
 import KNN as kn
 import Recognition as rec
 
-TESTING = 0
+TESTING = 1
 
 def get_license_plate_image_name(x):
     LPI_name = (con.LICENSE_PLATES_FOLDER +

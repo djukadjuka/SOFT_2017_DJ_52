@@ -13,8 +13,8 @@ import Image_processing as ip
 import Image_presentation as impress
 
 TESTING = 0
-IMAGES = [25,26,27,28,29,30,31,32,33,34,35]
-#IMAGES = range(len(con.TRAINING_DATA_IMAGE_NAMES))
+#IMAGES = [25,26,27,28,29,30,31,32,33,34,35]
+IMAGES = range(len(con.TRAINING_DATA_IMAGE_NAMES))
 
 
 #save all extracted training data

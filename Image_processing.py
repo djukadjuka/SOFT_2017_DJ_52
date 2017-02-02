@@ -37,11 +37,14 @@ def load_and_get_images(full_path_to_image):                #... (1) tested OK!
                                 cv2.THRESH_BINARY_INV)
     #create kernel for extended thresholding
     #options
-    kernel = np.ones((1,1),
-                     np.uint8)
+    #kernel = np.ones((1,1),
+    #                 np.uint8)
+
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,1))
 
     #open up image to remove small dots and
     #interfierence
+    
     t_image_fix = cv2.morphologyEx(t_image,
                                    cv2.MORPH_OPEN,
                                    kernel)
