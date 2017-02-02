@@ -37,7 +37,7 @@ LICENSE_PLATE_IMAGES = ["1","2","3","4","5","6"]
 LICENSE_PLATE_IMAGE_PREFIX = "LPI_"
 LICENSE_PLATE_IMAGE_SUFFIX = ".jpg"
 
-NEW_PLATE_NAMES = ["1","2","3","4","5","6","7","8","9","10","11",]
+NEW_PLATE_NAMES = ["1","2","4","5","6","7","8","9","10","11",]
 NEW_PLATE_PREFIX = "LP_"
 NEW_PLATE_SUFFIX = ".png"
 

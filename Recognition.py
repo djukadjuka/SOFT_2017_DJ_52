@@ -145,18 +145,22 @@ def form_char_list_by_flats(crop_flat_map):
         cropped_image = crop_flat_map[key][0]   #extract cropped_image
         flat_image = crop_flat_map[key][1]      #extract flat_image
 
-        ret, res, neig, dist = kn.KNN.findNearest(flat_image,1)
-        if dist[0][0] < 7000000:
-            print("<-----------> KEY : [",key,"] <----------->")
-            print("\t DISTANCE : [",dist,"]")
-            print("\t NEIGHBOURS : [",neig,"]")
-            print("\t RESULT : [",res,"]")
-            print("\t RETURN : [",ret,"]")
-            print("\t CHAR : [",chr(int(ret)),"]")
-            cv2.imshow(chr(int(ret)),cropped_image)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
+        ret, res, neig, dist = kn.KNN.findNearest(flat_image,10)
+        print("<-----------> KEY : [",key,"] <----------->")
+        print("MAPPED DISTANCES : ")
+        char_map = {}
+        for i in range(len(dist[0])):
+            char_map[chr(int(neig[0][i]))] = 0
+            
+        for i in range(len(dist[0])):
+            char_map[chr(int(neig[0][i]))] += 1
+            print("\t [",int(dist[0][i]),"]\t-> ",neig[0][i],"\t-> ", chr(int(neig[0][i])))
+
+        for key in char_map:
+            print("\t Character [",key,"]\tappears ",char_map[key],"\t times.")
+        cv2.imshow(chr(int(ret)),cropped_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
         
-    pass
 
 #Recognition.py
