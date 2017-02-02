@@ -52,7 +52,7 @@ def draw_regions_on_image(title,original_image,regions):
         x = bbox[1]
         h = bbox[2]
         w = bbox[3]
-        cv2.rectangle(img,(x,y),(w,h),(0,0,255,255),2)
+        cv2.rectangle(img,(x,y),(w,h),(0,0,255,255),1)
     cv2.imshow(title,img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

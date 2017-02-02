@@ -73,7 +73,7 @@ def Main():
     if TESTING == 1:
         rec.show_regions_LPI(LPI_original_resized,LPI_regions)
 
-    cropped_images,flat_images = rec.prep_for_recognition(LPI_regions,LPI_thresh_resized,LPI_original_resized,TESTING)
+    cropped_images,flat_images = rec.prep_for_recognition(LPI_labeled,LPI_regions,LPI_thresh_resized,LPI_original_resized,TESTING)
 
     crop_flat_map = rec.map_crops_with_flats(cropped_images,flat_images,TESTING)
     

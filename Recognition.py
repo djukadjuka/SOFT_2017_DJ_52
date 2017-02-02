@@ -96,16 +96,43 @@ def PATCH_region_ratios(LPI_regions,TEST_FLAG):
         plt.show()
         print(n)
 
-def prep_for_recognition(LPI_regions,LPI_thresh,LPI_original,TEST_FLAG):
+def prep_for_recognition(LPI_labeled,LPI_regions,LPI_thresh,LPI_original,TEST_FLAG):
+
     cropped_region_images = []
     flat_images = []
 
     #PATCH_region_ratios(LPI_regions,TEST_FLAG)
     
     #cropped out all regions
-    cropped_region_images_unsorted = ip.get_cropped_images(LPI_regions,LPI_thresh)
+    cropped_region_images = ip.get_cropped_images(LPI_regions,LPI_thresh)
 
-    
+    for i in range(len(cropped_region_images)):
+        r0 = LPI_regions[i]
+        i0 = cropped_region_images[i]
+
+        x0 = r0.bbox[1]
+        y0 = r0.bbox[0]
+
+        for j in range(len(cropped_region_images)):
+            r1 = LPI_regions[j]
+            i1 = cropped_region_images[j]
+
+            x1 = r1.bbox[1]
+            y1 = r1.bbox[0]
+
+            if x0 < x1:
+                
+                temp = cropped_region_images[i]
+                cropped_region_images[i] = cropped_region_images[j]
+                i0 = cropped_region_images[j]
+                cropped_region_images[j] = temp
+
+                temp = LPI_regions[i]
+                LPI_regions[i] = LPI_regions[j]
+                r0 = LPI_regions[j]
+                x0 = r0.bbox[1]
+                y0 = r0.bbox[0]
+                LPI_regions[j] = temp
 
     #just to show all cropped images
     if TEST_FLAG == 1:
