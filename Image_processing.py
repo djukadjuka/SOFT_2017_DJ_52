@@ -131,8 +131,8 @@ def get_target_regions(all_regions,min_max_pairs,mean_size):
             h = bbox[3] - bbox[1]
             ratio = float(h) / w
             region_size = h*w
-            if ratio >= minn and ratio <= maxx and region_size >= mean_size-mean_size/2:
-                good_regions.append(region)
+            #if ratio >= minn and ratio <= maxx and region_size >= mean_size-mean_size/2:
+            good_regions.append(region)
     return good_regions
 
 def get_cropped_images(good_regions_list, thresh_image):
