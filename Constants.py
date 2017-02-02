@@ -15,8 +15,8 @@ NEW_PLATES_FOLDER = "NEW_PLATES/"
 RESIZE_WIDTH = 1100      #For resizing processed images, contours etc...
 RESIZE_HEIGHT = 150     #
 
-REC_RESIZE_WIDTH = 800
-REC_RESIZE_HEIGHT = 300
+REC_RESIZE_WIDTH = RESIZE_WIDTH#800
+REC_RESIZE_HEIGHT = RESIZE_HEIGHT#300
 
 LETTER_WIDTH = 30       #For resizing individual letters when creating training data
 LETTER_HEIGHT = 20      #

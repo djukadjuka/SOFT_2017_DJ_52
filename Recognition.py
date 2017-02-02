@@ -69,9 +69,38 @@ def extract_regions_LPI(LPI_thresh):
 def show_regions_LPI(LPI_original, LPI_regions):
     impress.draw_regions_on_image("Regions",LPI_original,LPI_regions)
 
+def PATCH_region_ratios(LPI_regions,TEST_FLAG):
+    all_ratios = []
+    all_areas = []
+    for region in LPI_regions:
+
+        bbox = region.bbox
+
+        w = bbox[2] - bbox[0]
+        h = bbox[3] - bbox[1]
+
+        ratio = float(h)/w
+        area = float(h*w)
+        all_ratios.append(ratio)
+        all_areas.append(area)
+        
+    bns = np.linspace(0,20,41)
+    n,bins,patches = plt.hist(all_ratios,bins=bns)
+    if TEST_FLAG == 1:
+        plt.show()
+        print(n)
+
+    bns = np.linspace(0,1000)
+    n,bins,patches = plt.hist(all_areas,bins=bns)
+    if TEST_FLAG == 1:
+        plt.show()
+        print(n)
+
 def prep_for_recognition(LPI_regions,LPI_thresh,LPI_original,TEST_FLAG):
     cropped_region_images = []
     flat_images = []
+
+    PATCH_region_ratios(LPI_regions,TEST_FLAG)
     
     #cropped out all regions
     cropped_region_images = ip.get_cropped_images(LPI_regions,LPI_thresh)
@@ -102,12 +131,6 @@ def map_crops_with_flats(cropped_images,flat_images,TEST_FLAG):
         crop_flat_pair.append(cropped_images[i])
         crop_flat_pair.append(flat_images[i])
         crop_flat_map[i] = crop_flat_pair
-
-    #if TEST_FLAG == 1:
-    #    for key in crop_flat_map:
-    #        titles = [str(key)+" - Original", str(key) + " - flat"]
-    #        imgs = crop_flat_map[key]
-    #        impress.show_multiple_images(titles,imgs)
 
     return crop_flat_map
 
@@ -153,16 +176,22 @@ def form_char_list_by_flats(crop_flat_map):
         char_map = {}
         for i in range(len(dist[0])):
             char_map[chr(int(neig[0][i]))] = 0
+
+        valid_ranges = 0
             
         for i in range(len(dist[0])):
             char_map[chr(int(neig[0][i]))] += 1
-            print("\t [",int(dist[0][i]),"]\t-> ",neig[0][i],"\t-> ", chr(int(neig[0][i])))
+            if int(dist[0][i]) < 6000000:
+                valid_ranges+=1
+                print("\t [",int(dist[0][i]),"]\t-> ",neig[0][i],"\t-> ", chr(int(neig[0][i])))
 
-        for key in char_map:
-            print("\t Character [",key,"]\tappears ",char_map[key],"\t times.")
-        cv2.imshow(chr(int(ret)),cropped_image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-        
+        if valid_ranges > 0:
+            for key in char_map:
+                if char_map[key] > 1:
+                    print("\t Character [",key,"]\tappears ",char_map[key],"\t times.")
+                    cv2.imshow(chr(int(ret)),cropped_image)
+                    cv2.waitKey(0)
+                    cv2.destroyAllWindows()
+                    
 
 #Recognition.py
