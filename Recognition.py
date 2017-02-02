@@ -100,10 +100,12 @@ def prep_for_recognition(LPI_regions,LPI_thresh,LPI_original,TEST_FLAG):
     cropped_region_images = []
     flat_images = []
 
-    PATCH_region_ratios(LPI_regions,TEST_FLAG)
+    #PATCH_region_ratios(LPI_regions,TEST_FLAG)
     
     #cropped out all regions
-    cropped_region_images = ip.get_cropped_images(LPI_regions,LPI_thresh)
+    cropped_region_images_unsorted = ip.get_cropped_images(LPI_regions,LPI_thresh)
+
+    
 
     #just to show all cropped images
     if TEST_FLAG == 1:
@@ -170,25 +172,35 @@ def form_char_list_by_flats(crop_flat_map):
         cropped_image = crop_flat_map[key][0]   #extract cropped_image
         flat_image = crop_flat_map[key][1]      #extract flat_image
 
+        #get data from KNN
         ret, res, neig, dist = kn.KNN.findNearest(flat_image,10)
-        print("<-----------> KEY : [",key,"] <----------->")
-        print("MAPPED DISTANCES : ")
+
         char_map = {}
+        #map all found possible letters
+        #and set occurence to 0
         for i in range(len(dist[0])):
-            char_map[chr(int(neig[0][i]))] = 0
+            char_map[chr(int(neig[0][i]))] = [0,[]]
 
+        #set all valid ranges to zero for now
         valid_ranges = 0
-            
         for i in range(len(dist[0])):
-            char_map[chr(int(neig[0][i]))] += 1
+            char_map[chr(int(neig[0][i]))][0] += 1         #found another letter of this key
+            
+            #check the distance
             if int(dist[0][i]) < 6000000:
-                valid_ranges+=1
-                print("\t [",int(dist[0][i]),"]\t-> ",neig[0][i],"\t-> ", chr(int(neig[0][i])))
-
+                valid_ranges +=1            #found a good distance from KNN
+                char_map[chr(int(neig[0][i]))][1].append(int(dist[0][i]))
+            else:
+                char_map[chr(int(neig[0][i]))][1].append(None)
+        #if we found ANY valid ranges we gotta print the data extracted
         if valid_ranges > 0:
-            for key in char_map:
-                if char_map[key] > 1:
-                    print("\t Character [",key,"]\tappears ",char_map[key],"\t times.")
+            for k in char_map:
+                if char_map[k][0] > 1:
+                    print("<===> GLOBAL KEY : [",key,"] <===>")
+                    print("\t==> LETTER [",k,"]")
+                    print("\t\t DISTANCE : [",char_map[k][1],"]")
+                    print("\t\t OCURRENCES : [",char_map[k][0],"]")
+                    
                     cv2.imshow(chr(int(ret)),cropped_image)
                     cv2.waitKey(0)
                     cv2.destroyAllWindows()
