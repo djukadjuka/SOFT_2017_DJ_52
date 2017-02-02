@@ -23,6 +23,13 @@ def get_license_plate_image_name(x):
                 con.LICENSE_PLATE_IMAGE_SUFFIX)
     return LPI_name
 
+def get_new_LPI_name(x):
+    LPI_NAME = (con.NEW_PLATES_FOLDER +
+                con.NEW_PLATE_PREFIX +
+                con.NEW_PLATE_NAMES[x] +
+                con.NEW_PLATE_SUFFIX)
+    return LPI_NAME
+
 #display flag to show specific images
 #   0   -   Show no images
 #   1   -   Show all images
@@ -58,7 +65,8 @@ def Main():
     else:
         print("KNN training successfull!")
 
-    LPI_name = get_license_plate_image_name(1)
+    #LPI_name = get_license_plate_image_name(1)
+    LPI_name = get_new_LPI_name(1)
     LPI_original, LPI_original_resized, LPI_gray, LPI_gray_resized, LPI_thresh, LPI_thresh_resized = get_images(LPI_name,3)
     LPI_labeled, LPI_regions = rec.extract_regions_LPI(LPI_thresh_resized)
 
