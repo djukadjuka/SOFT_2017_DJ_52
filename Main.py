@@ -14,7 +14,7 @@ import Image_presentation as impress
 import KNN as kn
 import Recognition as rec
 
-TESTING = 0
+TESTING = 1
 
 def get_license_plate_image_name(x):
     LPI_name = (con.LICENSE_PLATES_FOLDER +
@@ -66,7 +66,7 @@ def Main():
         print("KNN training successfull!")
 
     #LPI_name = get_license_plate_image_name(1)
-    LPI_name = get_new_LPI_name(9)
+    LPI_name = get_new_LPI_name(0)
     LPI_original, LPI_original_resized, LPI_gray, LPI_gray_resized, LPI_thresh, LPI_thresh_resized = get_images(LPI_name,3)
     LPI_labeled, LPI_regions = rec.extract_regions_LPI(LPI_thresh_resized)
 
